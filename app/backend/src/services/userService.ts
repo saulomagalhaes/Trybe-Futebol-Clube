@@ -18,7 +18,7 @@ class UserService implements IUserService {
   public login = async ({ email, password }:ILogin):Promise<string> => {
     const user: User | null = await UserService.searchByEmail(email);
 
-    const unauthorizedError = new ThrowError('unauthorizedError', 'Email or password is not valid');
+    const unauthorizedError = new ThrowError('UnauthorizedError', 'Incorrect email or password');
     if (!user) {
       throw unauthorizedError;
     }

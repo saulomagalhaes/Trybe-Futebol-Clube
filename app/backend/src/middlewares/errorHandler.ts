@@ -6,8 +6,8 @@ const errorMiddleware: ErrorRequestHandler = (err, _req, res, _next) => {
     case 'ValidationError':
       res.status(400).json({ message: err.details[0].message });
       break;
-    case 'NotFoundError':
-      res.status(404).json({ message });
+    case 'UnauthorizedError':
+      res.status(401).json({ message });
       break;
     case 'ConflictError':
       res.status(409).json({ message });
