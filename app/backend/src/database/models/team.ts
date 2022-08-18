@@ -4,12 +4,7 @@ import Match from './match';
 
 class Team extends Model {
   id!: number;
-  email!: string;
-  passwordHash!: string;
-  name!: string;
-  phone!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
+  teamName!: string;
 }
 
 Team.init({

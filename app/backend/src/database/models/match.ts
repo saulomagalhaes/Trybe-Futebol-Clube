@@ -3,12 +3,11 @@ import db from '.';
 
 class Match extends Model {
   id!: number;
-  email!: string;
-  passwordHash!: string;
-  name!: string;
-  phone!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
+  homeTeam!: number;
+  homeTeamGoals!: number;
+  awayTeam!: number;
+  awayTeamGoals!: number;
+  inProgress!: boolean;
 }
 
 Match.init({
