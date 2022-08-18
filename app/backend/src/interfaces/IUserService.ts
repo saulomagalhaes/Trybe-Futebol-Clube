@@ -5,4 +5,5 @@ export interface ILogin {
 
 export interface IUserService {
   login({ email, password }: ILogin): Promise<string>;
+  validate(token: string): Promise<string>;
 }

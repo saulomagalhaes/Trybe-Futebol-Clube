@@ -26,7 +26,7 @@ class UserService implements IUserService {
       throw unauthorizedError;
     }
     const { id, role } = user;
-    const payload = { data: id, role };
+    const payload = { data: { id, role } };
     const options = {
       expiresIn: '15d',
     };
@@ -34,6 +34,11 @@ class UserService implements IUserService {
     const token = JwtService.sign(payload, process.env.JWT_SECRET || '', options);
 
     return token;
+  };
+
+  public validate = async (token: string): Promise<string> => {
+    const role = JwtService.verify(token, process.env.JWT_SECRET || '');
+    return role;
   };
 }
 
