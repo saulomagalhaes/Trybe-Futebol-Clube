@@ -9,4 +9,10 @@ export default class MathController {
     const matches = await this._matchService.getAll();
     res.status(200).json(matches);
   };
+
+  public saveMatch = async (req: Request, res: Response): Promise<void> => {
+    const token = req.headers.authorization || '';
+    const match = await this._matchService.saveMatch(token, req.body);
+    res.status(201).json(match);
+  };
 }

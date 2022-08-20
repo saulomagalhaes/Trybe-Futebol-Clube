@@ -4,5 +4,6 @@ import { matchController } from '.';
 const router = Router();
 
 router.get('/', (req, res) => matchController.getAll(req, res));
+router.post('/', (req, res) => matchController.saveMatch(req, res));
 
 export default router;
