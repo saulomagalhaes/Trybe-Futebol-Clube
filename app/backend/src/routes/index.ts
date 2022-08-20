@@ -1,5 +1,7 @@
+import MathController from '../controllers/matchController';
 import TeamController from '../controllers/teamController';
 import UserController from '../controllers/userController';
+import MatchService from '../services/matchService';
 import TeamService from '../services/teamsService';
 import UserService from '../services/userService';
 
@@ -9,4 +11,7 @@ const userController = new UserController(userService);
 const teamService = new TeamService();
 const teamController = new TeamController(teamService);
 
-export { userController, teamController };
+const matchService = new MatchService();
+const matchController = new MathController(matchService);
+
+export { userController, teamController, matchController };
