@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import Match from '../database/models/match';
 import Team from '../database/models/team';
+import ThrowError from '../error/throwError';
 import { IBodyMatch, IMatch, IMatchService } from '../interfaces/IMatchService';
 import JwtService from './jwtService';
 
@@ -24,8 +25,20 @@ class MatchService implements IMatchService {
     return matches;
   };
 
-  public saveMatch = async (token: string, match: IBodyMatch): Promise<IMatch> => {
+  public saveMatch = async (
+    token: string,
+    match: IBodyMatch,
+  ): Promise<IMatch> => {
     JwtService.verify(token, process.env.JWT_SECRET || '');
+
+    const { homeTeam, awayTeam } = match;
+
+    if (homeTeam === awayTeam) {
+      throw new ThrowError(
+        'UnauthorizedError',
+        'It is not possible to create a match with two equal teams',
+      );
+    }
 
     const newMatch = await Match.create({ ...match, inProgress: true });
 
