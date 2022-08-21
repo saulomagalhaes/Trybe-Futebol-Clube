@@ -23,4 +23,5 @@ export interface IMatch {
 export interface IMatchService {
   getAll(): Promise<IMatch[]>;
   saveMatch(_token: string, match: IBodyMatch): Promise<IMatch>;
+  updateInProgress(matchId: string): Promise<object>;
 }

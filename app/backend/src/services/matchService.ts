@@ -31,6 +31,11 @@ class MatchService implements IMatchService {
 
     return newMatch;
   };
+
+  public updateInProgress = async (matchId: string): Promise<object> => {
+    await Match.update({ inProgress: false }, { where: { id: matchId } });
+    return { message: 'Finished' };
+  };
 }
 
 export default MatchService;
