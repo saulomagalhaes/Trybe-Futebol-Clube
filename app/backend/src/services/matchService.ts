@@ -6,6 +6,24 @@ import { IBodyMatch, IMatch, IMatchService } from '../interfaces/IMatchService';
 import JwtService from './jwtService';
 
 class MatchService implements IMatchService {
+  static validateMatch = async (homeTeam:number, awayTeam:number):Promise<void> => {
+    if (homeTeam === awayTeam) {
+      throw new ThrowError(
+        'UnauthorizedError',
+        'It is not possible to create a match with two equal teams',
+      );
+    }
+    const home = await Match.findByPk(homeTeam);
+    const away = await Match.findByPk(awayTeam);
+
+    if (!home || !away) {
+      throw new ThrowError(
+        'NotFound',
+        'There is no team with such id!',
+      );
+    }
+  };
+
   public getAll = async (): Promise<IMatch[]> => {
     const matches = await Match.findAll({
       include: [
@@ -33,12 +51,7 @@ class MatchService implements IMatchService {
 
     const { homeTeam, awayTeam } = match;
 
-    if (homeTeam === awayTeam) {
-      throw new ThrowError(
-        'UnauthorizedError',
-        'It is not possible to create a match with two equal teams',
-      );
-    }
+    await MatchService.validateMatch(homeTeam, awayTeam);
 
     const newMatch = await Match.create({ ...match, inProgress: true });
 
