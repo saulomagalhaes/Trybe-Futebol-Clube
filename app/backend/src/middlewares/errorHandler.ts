@@ -11,7 +11,7 @@ const errorMiddleware: ErrorRequestHandler = (err, _req, res, _next) => {
       break;
     case 'ConflictError': res.status(409).json({ message });
       break;
-    case 'SequelizeConnectionRefusedError': res.status(503).end();
+    case 'JsonWebTokenError': res.status(401).json({ message: 'Token must be a valid token' });
       break;
     default: res.status(500).json({ message });
       break;
