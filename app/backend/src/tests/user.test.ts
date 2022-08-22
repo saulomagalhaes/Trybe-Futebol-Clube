@@ -67,6 +67,7 @@ describe("/login", () => {
       });
       
     it("should return 401 status when password is not correct", async () => {
+      sinon.stub(User, "findOne").resolves(userMock as User);
       sinon.stub(PasswordService, "comparePassword").returns(false);
       const response = await chai.request(app)
       .post("/login")
