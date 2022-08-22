@@ -2,11 +2,16 @@ import 'dotenv/config';
 import Match from '../database/models/match';
 import Team from '../database/models/team';
 import ThrowError from '../error/throwError';
-import { IBodyMatch, IMatch, IMatchService } from '../interfaces/IMatchService';
+import {
+  IBodyMatch, IBodyUpdateMatch, IFinishedMatch, IMatch, IMatchService,
+} from '../interfaces/IMatchService';
 import JwtService from './jwtService';
 
 class MatchService implements IMatchService {
-  static validateMatch = async (homeTeam:number, awayTeam:number):Promise<void> => {
+  static validateMatch = async (
+    homeTeam: number,
+    awayTeam: number,
+  ): Promise<void> => {
     if (homeTeam === awayTeam) {
       throw new ThrowError(
         'UnauthorizedError',
@@ -17,10 +22,7 @@ class MatchService implements IMatchService {
     const away = await Match.findByPk(awayTeam);
 
     if (!home || !away) {
-      throw new ThrowError(
-        'NotFound',
-        'There is no team with such id!',
-      );
+      throw new ThrowError('NotFound', 'There is no team with such id!');
     }
   };
 
@@ -58,9 +60,19 @@ class MatchService implements IMatchService {
     return newMatch;
   };
 
-  public updateInProgress = async (matchId: string): Promise<object> => {
+  public updateInProgress = async (
+    matchId: string,
+  ): Promise<IFinishedMatch> => {
     await Match.update({ inProgress: false }, { where: { id: matchId } });
     return { message: 'Finished' };
+  };
+
+  public updateMatch = async (
+    matchId: string,
+    match: IBodyUpdateMatch,
+  ): Promise<object> => {
+    await Match.update(match, { where: { id: matchId } });
+    return { message: 'Updated' };
   };
 }
 

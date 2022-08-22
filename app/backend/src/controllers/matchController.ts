@@ -21,4 +21,10 @@ export default class MathController {
     const match = await this._matchService.updateInProgress(matchId);
     res.status(200).json(match);
   };
+
+  public updateMatch = async (req: Request, res: Response): Promise<void> => {
+    const matchId = req.params.id;
+    const match = await this._matchService.updateMatch(matchId, req.body);
+    res.status(200).json(match);
+  };
 }

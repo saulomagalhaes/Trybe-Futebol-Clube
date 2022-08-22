@@ -1,3 +1,12 @@
+export interface IFinishedMatch {
+  message: string;
+}
+
+export interface IBodyUpdateMatch {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}
+
 export interface IBodyMatch {
   homeTeam: number;
   homeTeamGoals: number;
@@ -24,4 +33,5 @@ export interface IMatchService {
   getAll(): Promise<IMatch[]>;
   saveMatch(_token: string, match: IBodyMatch): Promise<IMatch>;
   updateInProgress(matchId: string): Promise<object>;
+  updateMatch(matchId: string, match: IBodyUpdateMatch): Promise<object>;
 }
