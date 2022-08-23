@@ -3,8 +3,8 @@ import Match from '../database/models/match';
 import Team from '../database/models/team';
 import { IHomeTeamsRanking, ILeaderboard } from '../interfaces/ILeaderboard';
 import { IMatch } from '../interfaces/IMatchService';
-// import ThrowError from '../error/throwError';
 
+type M = keyof IMatch;
 class LeaderboardService implements ILeaderboard {
   static getFinishedMatches = async (): Promise<IMatch[]> => {
     const matches = Match.findAll({
@@ -25,29 +25,32 @@ class LeaderboardService implements ILeaderboard {
     return matches;
   };
 
-  static goalsData = (filteredTeam:IMatch[]) => {
+  static goalsData = (filteredTeam:IMatch[], t1:M) => {
     const goalsFavor = filteredTeam.reduce(
-      (acc, t) => t.homeTeamGoals + acc,
+      (acc, t) => (t1 === 'homeTeam' ? t.homeTeamGoals + acc : t.awayTeamGoals + acc),
       0,
     );
     const goalsOwn = filteredTeam.reduce(
-      (acc, t) => t.awayTeamGoals + acc,
+      (acc, t) => (t1 === 'homeTeam' ? t.awayTeamGoals + acc : t.homeTeamGoals + acc),
       0,
     );
     const goalsBalance = goalsFavor - goalsOwn;
     return { goalsFavor, goalsOwn, goalsBalance };
   };
 
-  static matchDataEfficiencyAndPoints = (filteredTeam:IMatch[]) => {
+  static matchDataEfficiencyAndPoints = (filteredTeam:IMatch[], t1:M, t2:M) => {
+    const team1 = t1 === 'homeTeam' ? 'homeTeamGoals' : 'awayTeamGoals';
+    const team2 = t2 === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals';
+
     const totalGames = filteredTeam.length;
     const totalVictories = filteredTeam.filter(
-      (t) => t.homeTeamGoals > t.awayTeamGoals,
+      (t) => t[team1] > t[team2],
     ).length;
     const totalDraws = filteredTeam.filter(
-      (t) => t.homeTeamGoals === t.awayTeamGoals,
+      (t) => t[team1] === t[team2],
     ).length;
     const totalLosses = filteredTeam.filter(
-      (t) => t.homeTeamGoals < t.awayTeamGoals,
+      (t) => t[team1] < t[team2],
     ).length;
     const totalPoints = totalVictories * 3 + totalDraws;
     const efficiency = ((totalPoints / (totalGames * 3)) * 100)
@@ -68,14 +71,15 @@ class LeaderboardService implements ILeaderboard {
     return rankingSorted;
   };
 
-  public homeTeamsRanking = async (): Promise<IHomeTeamsRanking[]> => {
+  public teamsRanking = async (t1:M, t2:M): Promise<IHomeTeamsRanking[]> => {
     const matches = await LeaderboardService.getFinishedMatches();
     const homeTeamsRanking = matches.map((match) => {
-      const filteredTeam = matches.filter((m) => m.homeTeam === match.homeTeam);
-      const goals = LeaderboardService.goalsData(filteredTeam);
-      const matchData = LeaderboardService.matchDataEfficiencyAndPoints(filteredTeam);
+      const filteredTeam = matches.filter((m) => m[t1] === match[t1]);
+      const goals = LeaderboardService.goalsData(filteredTeam, t1);
+      const matchData = LeaderboardService.matchDataEfficiencyAndPoints(filteredTeam, t1, t2);
+      const isT1Home = t1 === 'homeTeam' ? 'teamHome' : 'teamAway';
       return {
-        name: match.teamHome?.teamName || '', ...matchData, ...goals };
+        name: match[isT1Home]?.teamName || '', ...matchData, ...goals };
     });
 
     const ranking = homeTeamsRanking.filter(

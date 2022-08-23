@@ -1,5 +1,5 @@
 export interface IHomeTeamsRanking {
-  name: string,
+  name: string;
   totalPoints: number,
   totalGames: number,
   totalVictories: number,
@@ -12,5 +12,5 @@ export interface IHomeTeamsRanking {
 }
 
 export interface ILeaderboard {
-  homeTeamsRanking(): Promise<IHomeTeamsRanking[]>
+  teamsRanking(team1:string, team2:string): Promise<IHomeTeamsRanking[]>
 }
