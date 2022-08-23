@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import Match from '../database/models/match';
 import Team from '../database/models/team';
-import { IHomeTeamsRanking, ILeaderboard } from '../interfaces/ILeaderboard';
+import { ILeaderboard, ITeamsRanking } from '../interfaces/ILeaderboard';
 import { IMatch } from '../interfaces/IMatchService';
 
 type M = keyof IMatch;
@@ -59,7 +59,7 @@ class LeaderboardService implements ILeaderboard {
     return { totalPoints, totalGames, totalVictories, totalDraws, totalLosses, efficiency };
   };
 
-  static sortRanking = (ranking:IHomeTeamsRanking[]) => {
+  static sortRanking = (ranking:ITeamsRanking[]) => {
     const rankingSorted = ranking.sort(
       (a, b) =>
         b.totalPoints - a.totalPoints
@@ -71,7 +71,7 @@ class LeaderboardService implements ILeaderboard {
     return rankingSorted;
   };
 
-  public teamsRanking = async (t1:M, t2:M): Promise<IHomeTeamsRanking[]> => {
+  public teamsRanking = async (t1:M, t2:M): Promise<ITeamsRanking[]> => {
     const matches = await LeaderboardService.getFinishedMatches();
     const homeTeamsRanking = matches.map((match) => {
       const filteredTeam = matches.filter((m) => m[t1] === match[t1]);
@@ -87,6 +87,27 @@ class LeaderboardService implements ILeaderboard {
         index === self.findIndex((t) => t.name === team.name),
     );
     return LeaderboardService.sortRanking(ranking);
+  };
+
+  public generalRanking = (duplicateRanking:ITeamsRanking[]) => {
+    const normalizedRanking:ITeamsRanking[] = [];
+    duplicateRanking.forEach((team) => {
+      const obj = normalizedRanking.find((t) => t.name === team.name);
+      if (obj) {
+        obj.totalPoints += team.totalPoints;
+        obj.totalGames += team.totalGames;
+        obj.totalVictories += team.totalVictories;
+        obj.totalDraws += team.totalDraws;
+        obj.totalLosses += team.totalLosses;
+        obj.goalsFavor += team.goalsFavor;
+        obj.goalsOwn += team.goalsOwn;
+        obj.goalsBalance += team.goalsBalance;
+        obj.efficiency = ((obj.totalPoints / (obj.totalGames * 3)) * 100).toFixed(2).toString();
+      } else {
+        normalizedRanking.push(team);
+      }
+    });
+    return LeaderboardService.sortRanking(normalizedRanking);
   };
 }
 
