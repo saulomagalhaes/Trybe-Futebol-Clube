@@ -74,6 +74,26 @@ class MatchService implements IMatchService {
     await Match.update(match, { where: { id: matchId } });
     return { message: 'Updated' };
   };
+
+  public filterMatchesInProgress = async (query: boolean): Promise<IMatch[]> => {
+    const matches = await Match.findAll({
+      where: { inProgress: query },
+      include: [
+        {
+          model: Team,
+          as: 'teamHome',
+          attributes: ['teamName'],
+        },
+        {
+          model: Team,
+          as: 'teamAway',
+          attributes: ['teamName'],
+        },
+      ],
+    });
+
+    return matches;
+  };
 }
 
 export default MatchService;

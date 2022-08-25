@@ -34,4 +34,5 @@ export interface IMatchService {
   saveMatch(_token: string, match: IBodyMatch): Promise<IMatch>;
   updateInProgress(matchId: string): Promise<object>;
   updateMatch(matchId: string, match: IBodyUpdateMatch): Promise<object>;
+  filterMatchesInProgress(query: boolean): Promise<IMatch[]>;
 }
