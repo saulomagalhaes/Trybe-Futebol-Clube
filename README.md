@@ -1,8 +1,8 @@
-# Trybe Futebol Clube
+# :soccer: Trybe Futebol Clube
 
-O TFC é um site informativo sobre partidas e classificações de futebol! :soccer:
+O TFC é um site informativo sobre partidas e classificações de futebol! 
 
-Neste projeto fui responsável por desenvolver somente o backend da aplicação, utilizando Node.js e Express.
+Neste projeto fui responsável por desenvolver o backend da aplicação utilizando tecnologias que estão em alta no mercado.
 
 ## Autor
 
