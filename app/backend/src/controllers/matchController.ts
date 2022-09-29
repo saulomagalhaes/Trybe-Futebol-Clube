@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import 'express-async-errors';
 import { IMatch, IMatchService } from '../interfaces/IMatchService';
 
 export default class MathController {

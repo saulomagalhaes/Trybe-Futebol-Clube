@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import 'express-async-errors';
 import { ITeamService } from '../interfaces/ITeamService';
 
 export default class TeamController {

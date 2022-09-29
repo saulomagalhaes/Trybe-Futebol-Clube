@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import 'express-async-errors';
 import { ILeaderboard } from '../interfaces/ILeaderboard';
 
 export default class LeaderboardController {
