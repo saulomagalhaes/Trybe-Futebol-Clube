@@ -11,7 +11,7 @@ Neste projeto fui responsável por desenvolver somente o backend da aplicação,
 
 - Construção de uma API RESTful aplicando o padrão de arquitetura de software MSC
 (Model-Service-Controller)
-- Realizar testes com Mocha Chai e Sinon;
+- Realizar testes de integração com Mocha Chai e Sinon;
 - Aplicar os pricípios SOLID;
 - Utilizar POO.
 
@@ -67,5 +67,6 @@ Utilize uma das credenciais abaixo para logar na aplicação e testar
 
 </details>
 
+## Screenshots
 
-
+![Print](https://i.pinimg.com/originals/76/11/62/76116208757d045fbc9ab5960dd2f435.jpg)
