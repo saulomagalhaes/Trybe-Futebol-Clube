@@ -1,6 +1,7 @@
 # Trybe Futebol Clube
 
 O TFC é um site informativo sobre partidas e classificações de futebol! :soccer:
+
 Neste projeto fui responsável por desenvolver somente o backend da aplicação, utilizando Node.js e Express.
 
 ## Autor
@@ -49,13 +50,11 @@ Suba o container Docker
   docker-compose up
 ```
 
-Acesse a aplicação front-end através da porta 3000
-
-```bash
+## Acesse a aplicação front-end através da porta 3000:
+  
    http://localhost:3000/login
-```
 
-Utilize uma das credenciais abaixo para logar na aplicação e testar
+## Utilize uma das credenciais abaixo para logar na aplicação e testar:
 
 **Administrador**
 - email: admin@admin.com
