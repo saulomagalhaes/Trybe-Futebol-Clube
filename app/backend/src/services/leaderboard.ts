@@ -38,7 +38,8 @@ class LeaderboardService implements ILeaderboard {
     return { goalsFavor, goalsOwn, goalsBalance };
   };
 
-  static matchDataEfficiencyAndPoints = (filteredTeam:IMatch[], t1:homeOrAwayTeam, t2:homeOrAwayTeam) => {
+  static matchDataEfficiencyAndPoints =
+  (filteredTeam: IMatch[], t1: homeOrAwayTeam, t2: homeOrAwayTeam) => {
     const team1 = t1 === 'homeTeam' ? 'homeTeamGoals' : 'awayTeamGoals';
     const team2 = t2 === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals';
 
