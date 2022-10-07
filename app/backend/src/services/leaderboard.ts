@@ -4,7 +4,7 @@ import Team from '../database/models/team';
 import { ILeaderboard, ITeamsRanking } from '../interfaces/ILeaderboard';
 import { IMatch } from '../interfaces/IMatchService';
 
-type M = keyof IMatch;
+type homeOrAwayTeam = keyof IMatch;
 class LeaderboardService implements ILeaderboard {
   static getFinishedMatches = async (): Promise<IMatch[]> => {
     const matches = Match.findAll({
@@ -25,7 +25,7 @@ class LeaderboardService implements ILeaderboard {
     return matches;
   };
 
-  static goalsData = (filteredTeam:IMatch[], t1:M) => {
+  static goalsData = (filteredTeam:IMatch[], t1:homeOrAwayTeam) => {
     const goalsFavor = filteredTeam.reduce(
       (acc, t) => (t1 === 'homeTeam' ? t.homeTeamGoals + acc : t.awayTeamGoals + acc),
       0,
@@ -38,7 +38,7 @@ class LeaderboardService implements ILeaderboard {
     return { goalsFavor, goalsOwn, goalsBalance };
   };
 
-  static matchDataEfficiencyAndPoints = (filteredTeam:IMatch[], t1:M, t2:M) => {
+  static matchDataEfficiencyAndPoints = (filteredTeam:IMatch[], t1:homeOrAwayTeam, t2:homeOrAwayTeam) => {
     const team1 = t1 === 'homeTeam' ? 'homeTeamGoals' : 'awayTeamGoals';
     const team2 = t2 === 'awayTeam' ? 'awayTeamGoals' : 'homeTeamGoals';
 
@@ -71,7 +71,7 @@ class LeaderboardService implements ILeaderboard {
     return rankingSorted;
   };
 
-  public teamsRanking = async (t1:M, t2:M): Promise<ITeamsRanking[]> => {
+  public teamsRanking = async (t1:homeOrAwayTeam, t2:homeOrAwayTeam): Promise<ITeamsRanking[]> => {
     const matches = await LeaderboardService.getFinishedMatches();
     const homeTeamsRanking = matches.map((match) => {
       const filteredTeam = matches.filter((m) => m[t1] === match[t1]);
